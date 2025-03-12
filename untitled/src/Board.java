@@ -125,4 +125,15 @@ public class Board {
             }
         }
     }
+
+    public boolean allShipSunk() {
+        int sunkShips = 0;
+
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                if (grid[i][j] == 'X') sunkShips++;
+            }
+        }
+        return sunkShips == 14;
+    }
 }
