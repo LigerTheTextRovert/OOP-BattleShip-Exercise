@@ -1,15 +1,61 @@
 public class Player {
-    private Board grid = new Board();
-    private Board trackGrid = new Board();
+    private String name;
+    private Board grid;
+    private Board trackingGrid;
+    private boolean isAI;
 
-    public boolean allShipSunk(Board board) {
-        int size = board.getGridSize();
-        char[][] grid = board.getGrid();
+    public Player(String name, int boardSize, boolean isAI) {
+        this.name = name;
+        this.grid = new Board(boardSize);
+        this.trackingGrid = new Board(boardSize); // Initialize tracking grid
+        this.isAI = isAI;
+    }
+
+    public void resetGrid() {
+        grid = new Board(grid.getGridSize()); // Reinitialize the grid to clear all previous ships & attacks
+        trackingGrid = new Board(grid.getGridSize()); // Reinitialize the grid to clear all previous ships & attacks
+    }
+
+
+    public Board getTrackingGrid(){
+        return this.trackingGrid;
+    }
+
+    public boolean isAI() {
+        return this.isAI;
+    }
+
+    public void attack(Player opponent, int row, int col) {
+        if (!trackingGrid.isValidAttack(row, col)) {
+            System.out.println("You already attacked this location! Try again.");
+            return;
+        }
+
+        if (opponent.getGrid().isHit(row, col)) {
+            System.out.println("Hit!");
+            opponent.getGrid().markHit(row, col);
+            trackingGrid.markHit(row, col);  // Update player's tracking grid
+        } else {
+            System.out.println("Miss!");
+            opponent.getGrid().markMiss(row, col);
+            trackingGrid.markMiss(row, col);  // Update player's tracking grid
+        }
+    }
+
+    public Board getGrid() {
+        return grid;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public boolean allShipsSunk(Board board){
         int sunkShips = 0;
 
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (grid[i][j] == 'X') sunkShips++;
+        for (int i = 0; i < board.getGridSize(); i++) {
+            for (int j = 0; j < board.getGridSize(); j++) {
+                if (grid.getGrid()[i][j] == 'X') sunkShips++;
             }
         }
         return sunkShips == 14;

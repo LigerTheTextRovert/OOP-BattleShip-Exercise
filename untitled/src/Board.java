@@ -1,16 +1,18 @@
+import java.util.Random;
+import java.util.Scanner;
+
 public class Board {
-    public int GRID_SIZE;
     private char[][] grid;
     private int gridSize;
 
     public Board() {
-        this.grid = new char[10][10];
-        initBoard();
+        this(10);
     }
 
     public Board(int size) {
-        this.GRID_SIZE = size;
+        this.gridSize = size;
         this.grid = new char[size][size];
+        initBoard();
     }
 
     public int getGridSize() {
@@ -22,7 +24,6 @@ public class Board {
     }
 
     private void initBoard() {
-        this.gridSize = grid.length;
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 grid[i][j] = '~';
@@ -46,15 +47,91 @@ public class Board {
         return true;
     }
 
+    public boolean isValidAttack(int row, int col) {
+        // Check if row and col are within grid bounds
+        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
+            return false;
+        }
+
+        // Check if the cell is already attacked
+        return grid[row][col] != 'X' && grid[row][col] != 'O';
+    }
+
+    public boolean isHit(int row, int col) {
+        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
+            return false; // Out-of-bounds means no hit
+        }
+        return grid[row][col] == 'S';
+    }
+
+    public void markHit(int row, int col) {
+        grid[row][col] = 'X';
+    }
+
+    public void markMiss(int row, int col) {
+        grid[row][col] = 'O';
+    }
+
+    public void placeShipsAutomatically() {
+        int[] shipSizes = {5, 4, 3, 2}; // Example ship sizes
+        Random random = new Random();
+
+        for (int size : shipSizes) {
+            boolean placed = false;
+            while (!placed) {
+                int row = random.nextInt(gridSize);
+                int col = random.nextInt(gridSize);
+                boolean horizontal = random.nextBoolean();
+
+                if (canPlaceShip(row, col, size, horizontal)) {
+                    placeShip(row, col, size, horizontal);
+                    placed = true;
+                }
+            }
+        }
+    }
+
+    public void placeShipsManually() {
+        Scanner scanner = new Scanner(System.in);
+        int[] shipSizes = {5, 4, 3, 2}; // Example ship sizes
+
+        for (int size : shipSizes) {
+            boolean placed = false;
+
+            while (!placed) {
+                System.out.println("Place a ship of size " + size);
+                System.out.print("Enter starting position (e.g., B4): ");
+                String input = scanner.next().toUpperCase();
+
+                int[] coords = Game.parseInput(input, gridSize);
+                if (coords == null) {
+                    System.out.println("Invalid input! Use format like B4.");
+                    continue;
+                }
+
+                System.out.print("Place horizontally? (yes/no): ");
+                boolean horizontal = scanner.next().trim().equalsIgnoreCase("yes");
+
+                if (canPlaceShip(coords[0], coords[1], size, horizontal)) {
+                    placeShip(coords[0], coords[1], size, horizontal);
+                    placed = true;
+                } else {
+                    System.out.println("Invalid placement! Ship overlaps or is out of bounds. Try again.");
+                }
+            }
+        }
+    }
+
     // Actually place the ship on the board
     public boolean placeShip(int row, int col, int size, boolean isHorizontal) {
         if (!canPlaceShip(row, col, size, isHorizontal)) {
+            System.out.println("Cannot place ship at (" + row + ", " + col + "). It overlaps or is out of bounds.");
             return false;
         }
 
         for (int i = 0; i < size; i++) {
             if (isHorizontal) {
-                grid[row][col + i] = 'S'; // Mark ship on board
+                grid[row][col + i] = 'S';
             } else {
                 grid[row + i][col] = 'S';
             }
