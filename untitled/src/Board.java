@@ -61,4 +61,24 @@ public class Board {
         }
         return true;
     }
+
+    public void printGrid() {
+
+        // Print column headers
+        System.out.print("  "); // Initial space for row numbers
+        for (int i = 0; i < gridSize; i++) {
+            System.out.printf("%2c ", 'A' + i); // Adjust spacing for alignment
+        }
+        System.out.println();
+
+        // Print rows with proper alignment
+        for (int i = 0; i < gridSize; i++) {
+            System.out.printf("%2d ", i); // Ensures proper alignment for row numbers
+            for (int j = 0; j < gridSize; j++) {
+                System.out.print(grid[i][j] + "  "); // Consistent spacing for grid elements
+            }
+            System.out.println();
+        }
+    }
+
 }
