@@ -13,6 +13,7 @@ public class Game {
 
     public Game() {
         scanner = new Scanner(System.in);
+        //The reason that i use sets is to avoid infinite loop via attacking the same spot again & again when it's AI turn;
         aiMoves = new HashSet<>();
         setupGame();
     }

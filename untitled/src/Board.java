@@ -128,7 +128,8 @@ public class Board {
         int[] shipSizes = new int[shipCount];
         Random random = new Random();
         for (int i = 0; i < shipCount; i++) {
-            shipSizes[i] = random.nextInt(4) + 2; // Generates a size between 2 and 5
+            //random.nextInt(n) generate an random integer between 0 and n-1
+            shipSizes[i] = random.nextInt(4) + 2;
         }
         return shipSizes;
     }
@@ -153,17 +154,17 @@ public class Board {
     public void printGrid() {
 
         // Print column headers
-        System.out.print("  "); // Initial space for row numbers
+        System.out.print("  ");
         for (int i = 0; i < gridSize; i++) {
-            System.out.printf("%2c ", 'A' + i); // Adjust spacing for alignment
+            System.out.printf("%2c ", 'A' + i);
         }
         System.out.println();
 
         // Print rows with proper alignment
         for (int i = 0; i < gridSize; i++) {
-            System.out.printf("%2d ", i); // Ensures proper alignment for row numbers
+            System.out.printf("%2d ", i);
             for (int j = 0; j < gridSize; j++) {
-                System.out.print(grid[i][j] + "  "); // Consistent spacing for grid elements
+                System.out.print(grid[i][j] + "  ");
             }
             System.out.println();
         }
