@@ -73,7 +73,8 @@ public class Board {
     }
 
     public void placeShipsAutomatically() {
-        int[] shipSizes = {5, 4, 3, 2}; // Example ship sizes
+        int shipCount = gridSize / 2 + 1;
+        int[] shipSizes = generateShipSizes(shipCount);
         Random random = new Random();
 
         for (int size : shipSizes) {
@@ -93,7 +94,8 @@ public class Board {
 
     public void placeShipsManually() {
         Scanner scanner = new Scanner(System.in);
-        int[] shipSizes = {5, 4, 3, 2}; // Example ship sizes
+        int shipCount = gridSize / 2 + 1;
+        int[] shipSizes = generateShipSizes(shipCount);
 
         for (int size : shipSizes) {
             boolean placed = false;
@@ -120,6 +122,15 @@ public class Board {
                 }
             }
         }
+    }
+
+    private int[] generateShipSizes(int shipCount) {
+        int[] shipSizes = new int[shipCount];
+        Random random = new Random();
+        for (int i = 0; i < shipCount; i++) {
+            shipSizes[i] = random.nextInt(4) + 2; // Generates a size between 2 and 5
+        }
+        return shipSizes;
     }
 
     // Actually place the ship on the board

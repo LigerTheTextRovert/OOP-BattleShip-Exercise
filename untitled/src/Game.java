@@ -67,6 +67,7 @@ public class Game {
     }
 
     public void playGame() {
+        //This part is for resting the grid info if the player wanna play again.
         player1.resetGrid();
         player2.resetGrid();
 
@@ -97,7 +98,7 @@ public class Game {
                     }
                     // Then, check if the attack is valid
                     if (opponent.getGrid().isValidAttack(coords[0], coords[1])) {
-                        currentPlayer.attack(opponent, coords[0], coords[1]); // Keep row as coords[0] and column as coords[1]
+                        currentPlayer.attack(opponent, coords[0], coords[1]);
                         break;
                     }
                     System.out.print("Invalid attack! Please enter a valid coordinate :");

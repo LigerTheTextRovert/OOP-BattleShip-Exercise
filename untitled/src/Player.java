@@ -7,13 +7,14 @@ public class Player {
     public Player(String name, int boardSize, boolean isAI) {
         this.name = name;
         this.grid = new Board(boardSize);
-        this.trackingGrid = new Board(boardSize); // Initialize tracking grid
+        this.trackingGrid = new Board(boardSize);
         this.isAI = isAI;
     }
 
+    // Reinitialize the grid to clear all previous ships & attacks
     public void resetGrid() {
-        grid = new Board(grid.getGridSize()); // Reinitialize the grid to clear all previous ships & attacks
-        trackingGrid = new Board(grid.getGridSize()); // Reinitialize the grid to clear all previous ships & attacks
+        grid = new Board(grid.getGridSize());
+        trackingGrid = new Board(grid.getGridSize());
     }
 
 
@@ -34,11 +35,11 @@ public class Player {
         if (opponent.getGrid().isHit(row, col)) {
             System.out.println("Hit!");
             opponent.getGrid().markHit(row, col);
-            trackingGrid.markHit(row, col);  // Update player's tracking grid
+            trackingGrid.markHit(row, col);
         } else {
             System.out.println("Miss!");
             opponent.getGrid().markMiss(row, col);
-            trackingGrid.markMiss(row, col);  // Update player's tracking grid
+            trackingGrid.markMiss(row, col);
         }
     }
 
